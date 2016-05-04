@@ -1,0 +1,89 @@
+---
+
+- hosts: zabbix-server
+  become: yes
+  become_method: sudo
+  vars_files:
+    - vars.yml
+
+  tasks:
+    
+    - name: Insert PPA into apt sources list
+      blockinfile:
+        dest: /etc/apt/sources.list
+        insertafter: EOF
+        backup: yes
+        block: |
+          # Zabbix Application PPA
+          deb http://ppa.launchpad.net/tbfr/zabbix/ubuntu precise main
+          deb-src http://ppa.launchpad.net/tbfr/zabbix/ubuntu precise main
+     
+    - name: Add the PPA's key
+      command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys C407E17D5F76A32B
+    
+    - name: Automate mysql password setup
+      command: bash -c "sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password {{ mysql_pw }}'"
+
+    - name: Automate mysql password setup
+      command: bash -c "sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password {{ mysql_pw }}'"
+
+    - name: Install packages for Zabbix server
+      apt: pkg={{ item }} update_cache=yes state=present
+      with_items:
+        - unzip
+        - python-mysqldb
+        - zabbix-server-mysql
+        - php5-mysql
+        - zabbix-frontend-php
+
+    - name: Insert lines for zabbix_server.conf file
+      lineinfile: 
+        dest: /etc/zabbix/zabbix_server.conf
+        backup: yes
+        regexp: "{{ item.outline }}"
+        line: "{{ item.inline }}"
+      with_items:
+        - { outline: '^DBName=zabbix', inline: 'DBName=zabbix'}
+        - { outline: '^DBUser=zabbix', inline: 'DBUser=zabbix'}
+        - { outline: '^# DBPassword=', inline: 'DBPassword=zabbix'}
+
+    - name: Unzip SQL files 
+      unarchive: src=/usr/share/zabbix-server-mysql/{{ item }}.gz 
+                 dest=/usr/share/zabbix-server-mysql/ 
+                 copy=no
+      with_items:
+        - data.sql
+        - images.sql
+        - schema.sql    
+
+    - name: Create MYsql database
+      mysql_db: login_password=zabbix 
+                name=zabbix 
+                state=present  
+
+    - name: Create a MYsql database user
+      mysql_user: login_password=zabbix 
+                  name=zabbix 
+                  password=zabbix 
+                  priv=zabbix.*:ALL,GRANT 
+                  state=present
+
+    - name: Import databases
+      mysql_db: state=import
+                name=zabbix 
+                login_password=zabbix 
+                target="/usr/share/zabbix-server-mysql/data.sql"
+
+    - name: Import databases1
+      mysql_db: state=import
+                name=zabbix 
+                login_password=zabbix 
+                target="/usr/share/zabbix-server-mysql/images.sql"
+
+    - name: Import databases2
+      mysql_db: state=import
+                name=zabbix 
+                login_password=zabbix 
+                target="/usr/share/zabbix-server-mysql/schema.sql"
+
+
