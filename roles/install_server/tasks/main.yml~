@@ -1,0 +1,16 @@
+---
+- name: Automate mysql password setup
+  command: bash -c "sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password {{ mysql_pw }}'"
+
+- name: Automate mysql password setup
+  command: bash -c "sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password {{ mysql_pw }}'"
+
+- name: Install packages for Zabbix server
+  apt: pkg={{ item }} update_cache=yes state=latest
+  with_items:
+    - zabbix-server-mysql
+    - zabbix-frontend-php
+    - python-mysqldb
+    - gzip
+    - php5-mysql
+

@@ -1,0 +1,26 @@
+---
+
+- hosts: server
+  become: yes
+  become_method: sudo
+
+  roles:
+    - deb_packages
+    - install_server
+    - configuration    
+    - mysql
+
+#- hosts: client
+#  become: yes
+#  become_method: sudo
+
+#  roles:
+#    - deb_packages
+
+#- hosts: proxy
+#  become: yes
+#  become_method: sudo
+#
+#  roles:
+#    - zabbix-server
+#    - zabbix-client
