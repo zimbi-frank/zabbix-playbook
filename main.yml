@@ -7,8 +7,9 @@
   roles:
     - deb_packages
     - install_server
-    - configuration    
+    - sql-config 
     - mysql
+    - zabbix-config
 
 #- hosts: client
 #  become: yes
