@@ -1,0 +1,63 @@
+---
+- name: check if DBHost in file is there
+  command: grep "# DBHost=localhost" /etc/zabbix/zabbix_server.conf
+  register: checkmyconf
+  always_run: True
+  ignore_errors: True
+  changed_when: False
+  
+- name: Insert DBHost for zabbix_server.conf file
+  lineinfile: 
+    dest: /etc/zabbix/zabbix_server.conf
+    backup: yes
+    regexp: ^# DBHost=localhost
+    line: DBHost=localhost
+  when: checkmyconf.rc == 0
+
+- name: check if DBName" in file is there
+  command: grep "DBName=zabbix" /etc/zabbix/zabbix_server.conf
+  register: checkmyconf1
+  always_run: True
+  ignore_errors: True
+  changed_when: False
+
+- name: Insert DBName for zabbix_server.conf file
+  lineinfile: 
+    dest: /etc/zabbix/zabbix_server.conf
+    regexp: ^DBName=
+    line: DBName=zabbix
+  when: checkmyconf1.rc == 1
+
+- name: check if DBUser in file is there
+  command: grep "DBUser=zabbix" /etc/zabbix/zabbix_server.conf
+  register: checkmyconf2
+  always_run: True
+  ignore_errors: True
+  changed_when: False
+
+- name: Insert DBUser for zabbix_server.conf file
+  lineinfile: 
+    dest: /etc/zabbix/zabbix_server.conf
+    regexp: ^DBUser=
+    line: DBUser=zabbix
+  when: checkmyconf2.rc == 1
+
+- name: check if DBPassword in file is there
+  command: grep "# DBPassword=" /etc/zabbix/zabbix_server.conf
+  register: checkmyconf3
+  always_run: True
+  ignore_errors: True
+  changed_when: False
+
+- name: Insert DBPassword for zabbix_server.conf file
+  lineinfile: 
+    dest: /etc/zabbix/zabbix_server.conf
+    regexp: ^# DBPassword=
+    line: DBPassword=zabbix
+  when: checkmyconf3.rc == 0
+
+
+
+
+
+

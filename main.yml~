@@ -7,8 +7,8 @@
   roles:
     - deb_packages
     - install_server
+    - configuration    
     - mysql
-    - configuration
 
 #- hosts: client
 #  become: yes
