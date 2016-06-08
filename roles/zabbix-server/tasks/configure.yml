@@ -1,0 +1,44 @@
+---
+- name: Insert max_execution_time for zabbix_server.conf file
+  lineinfile: 
+    dest: /etc/apache2/conf-enabled/zabbix.conf
+    backup: yes
+    regexp: "^        php_value max_execution_time"
+    line: "        php_value max_execution_time {{ max_execution_time }}"
+
+- name: Insert memory_limit for zabbix_server.conf file
+  lineinfile: 
+    dest: /etc/apache2/conf-enabled/zabbix.conf
+    regexp: "^        php_value memory_limit"
+    line: "        php_value memory_limit {{ memory_limit }}"
+
+- name: Insert post_max_size for zabbix_server.conf file
+  lineinfile: 
+    dest: /etc/apache2/conf-enabled/zabbix.conf
+    regexp: "^        php_value post_max_size"
+    line: "        php_value post_max_size {{ post_max_size }}"
+
+- name: Insert upload_max_filesize for zabbix_server.conf file
+  lineinfile: 
+    dest: /etc/apache2/conf-enabled/zabbix.conf
+    regexp: "^        php_value upload_max_filesize"
+    line: "        php_value upload_max_filesize {{ upload_max_filesize }}"
+
+- name: Insert max_input_time for zabbix_server.conf file
+  lineinfile: 
+    dest: /etc/apache2/conf-enabled/zabbix.conf
+    regexp: "^        php_value max_input_time"
+    line: "        php_value max_input_time {{ max_input_time }}"
+
+- name: Insert always_populate_raw_post_data for zabbix_server.conf file
+  lineinfile: 
+    dest: /etc/apache2/conf-enabled/zabbix.conf
+    regexp: "^        php_value always_populate_raw_post_data"
+    line: "        php_value always_populate_raw_post_data {{ always_populate_raw_post_data }}"
+  
+- name: Insert timezone for zabbix_server.conf file
+  lineinfile: 
+    dest: /etc/apache2/conf-enabled/zabbix.conf
+    regexp: "^        # php_value date.timezone"
+    line: "        php_value date.timezone {{ datetimezone }}"
+  notify: restart apache2

@@ -1,0 +1,15 @@
+mysql_pw: zabbix
+
+max_execution_time: 360
+
+memory_limit: 140M
+
+post_max_size: 20M
+
+upload_max_filesize: 4M
+
+max_input_time: 350
+
+always_populate_raw_post_data: -1
+
+datetimezone: Europe/Copenhagen

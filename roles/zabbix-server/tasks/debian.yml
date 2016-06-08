@@ -1,0 +1,28 @@
+---
+- name: download packages
+  get_url: url={{ item }} dest=/tmp/
+  with_items:
+    - http://repo.zabbix.com/zabbix/3.0/debian/pool/main/z/zabbix-release/zabbix-release_3.0-1+jessie_all.deb
+
+- name: Automate mysql password setup
+  command: bash -c "sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password {{ mysql_pw }}'"
+
+- name: Automate mysql password setup
+  command: bash -c "sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password {{ mysql_pw }}'"
+
+- name: Install packages for
+  apt:  update_cache=yes state=latest
+
+- name: install deb packages 
+  apt: deb={{ item }}
+  with_items:
+    - /tmp/zabbix-release_3.0-1+jessie_all.deb
+
+- name: Install packages for Zabbix server
+  apt: pkg={{ item }} update_cache=yes state=present
+  with_items:
+    - zabbix-server-mysql
+    - zabbix-frontend-php
+    - python-mysqldb
+    - php5-mysql
+  notify: start zabbix-server

@@ -1,0 +1,11 @@
+---
+
+- name: "Install the correct repository"
+  include: debian.yml
+  when: ansible_os_family == "Debian" and ansible_distribution == "Debian"
+
+- name: "Installing the correct repository"
+  include: ubuntu.yml
+  when: ansible_os_family == "Debian" and ansible_distribution == "Ubuntu"
+
+- include: configure.yml

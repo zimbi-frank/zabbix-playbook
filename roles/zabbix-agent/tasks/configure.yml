@@ -1,0 +1,16 @@
+---  
+- name: Insert time zone for zabbix_server.conf file
+  lineinfile: 
+    dest: /etc/zabbix/zabbix_agentd.conf
+    backup: yes
+    regexp: ^Server=
+    line: Server={{ zabbix_server_ip }}
+ 
+
+ 
+- name: Insert time zone for zabbix_server.conf file
+  lineinfile: 
+    dest: /etc/zabbix/zabbix_agentd.conf
+    regexp: ^Hostname=
+    line: Hostname={{ ansible_user }}
+  notify: restart zabbix-agent
