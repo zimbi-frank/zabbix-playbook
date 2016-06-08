@@ -5,18 +5,15 @@
   become_method: sudo
 
   roles:
-    - deb_packages
-    - install_server
-    - sql-config 
+    - zabbix-server
     - mysql
-    - zabbix-config
 
-#- hosts: client
-#  become: yes
-#  become_method: sudo
+- hosts: agent
+  become: yes
+  become_method: sudo
 
-#  roles:
-#    - deb_packages
+  roles:
+    - zabbix-agent
 
 #- hosts: proxy
 #  become: yes

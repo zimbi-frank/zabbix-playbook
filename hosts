@@ -1,9 +1,10 @@
 [server]
-#192.168.43.7 ansible_user=simbi
-10.165.16.89 ansible_user=simbi
+192.168.0.21 ansible_user=simbi ansible_become_pass=1234
+#10.165.16.124 ansible_user=vagrant ansible_become_pass=vagrant
 
-[client]
-192.168.0.18 ansible_user=simbi
+[agent]
+192.168.0.23 ansible_user=simbi ansible_become_pass=1234
+#10.165.16.125 ansible_user=vagrant ansible_become_pass=vagrant
 
 [proxy]
 

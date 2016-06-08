@@ -1,4 +1,0 @@
----
-
-- name: start zabbix-server
-  service: name=zabbix-server state=started

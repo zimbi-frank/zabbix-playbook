@@ -1,2 +1,7 @@
 ---
-# handlers file for mysql
+
+- name: start zabbix-server
+  service: name=zabbix-server state=started
+
+- name: restart apache2
+  service: name=apache2 state=restarted

@@ -1,27 +1,5 @@
 ---
-
-- name: Unzip SQL files 
-  shell: gunzip -c create.sql.gz > zabbix.sql
-  args:
-    chdir: /usr/share/doc/zabbix-server-mysql/
-
-
-- name: Create MYsql database
-  mysql_db: login_password=zabbix 
-            name=zabbix 
-            state=present 
-            collation=utf8_bin 
-  register: db_created
-
-- name: Create a MYsql database user
-  mysql_user: login_password=zabbix 
-              name=zabbix
-              password=zabbix 
-              priv=zabbix.*:ALL,GRANT 
-              host=localhost
-              state=present
-
-- name: Import databases
-  mysql_db: name=zabbix state=import login_user=zabbix login_password=zabbix target=/usr/share/doc/zabbix-server-mysql/zabbix.sql
-  when: db_created.changed
+- include: configure.yml 
+- include: databases.yml
+  
 

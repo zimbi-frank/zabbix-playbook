@@ -1,2 +1,8 @@
 ---
-# defaults file for mysql
+DBHost: localhost
+
+DBName: zabbix
+
+DBUser: zabbix
+
+DBPassword: zabbix
